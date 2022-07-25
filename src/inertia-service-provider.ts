@@ -1,8 +1,9 @@
 'use strict'
 
 import { Inertia } from './inertia'
+import { InertiaOptions } from './contracts'
 import { ServiceProvider } from '@supercharge/support'
-import { Application, HttpRequest, HttpRequestCtor, HttpResponse, HttpResponseCtor, ViewEngine } from '@supercharge/contracts'
+import { Application, HttpRequest, HttpRequestCtor, HttpResponse, HttpResponseCtor } from '@supercharge/contracts'
 
 /**
  * Extend the Supercharge request interface with the macro’ed inertia properties.
@@ -10,6 +11,7 @@ import { Application, HttpRequest, HttpRequestCtor, HttpResponse, HttpResponseCt
 declare module '@supercharge/contracts' {
   export interface HttpRequest {
     isInertia (): boolean
+    isNotInertia (): boolean
     inertiaVersion (): string
   }
 
@@ -37,6 +39,9 @@ export class InertiaServiceProvider extends ServiceProvider {
       .macro('isInertia', function (this: HttpRequest) {
         return this.hasHeader('X-Inertia')
       })
+      .macro('isNotInertia', function (this: HttpRequest) {
+        return !this.isInertia()
+      })
       .macro('inertiaVersion', function (this: HttpRequest) {
         return this.header('X-Inertia-Version')
       })
@@ -47,8 +52,8 @@ export class InertiaServiceProvider extends ServiceProvider {
    */
   private registerInertiaResponseMacros (): void {
     const app = this.app().make<Application>('app')
-    const inertiaConfig = app.config().get('inertia', {})
     const Response = this.app().make<HttpResponseCtor>('response')
+    const inertiaConfig = app.config().get<InertiaOptions>('inertia', { view: 'app' })
 
     Response.macro('inertia', function (this: HttpResponse) {
       return new Inertia(app, this.ctx(), inertiaConfig)
