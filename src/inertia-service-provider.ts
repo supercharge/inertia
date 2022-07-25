@@ -37,13 +37,13 @@ export class InertiaServiceProvider extends ServiceProvider {
 
     Request
       .macro('isInertia', function (this: HttpRequest) {
-        return this.hasHeader('X-Inertia')
+        return this.hasHeader('x-inertia')
       })
       .macro('isNotInertia', function (this: HttpRequest) {
         return !this.isInertia()
       })
       .macro('inertiaVersion', function (this: HttpRequest) {
-        return this.header('X-Inertia-Version')
+        return this.header('x-inertia-version')
       })
   }
 
