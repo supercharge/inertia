@@ -10,7 +10,7 @@ import { Application, HttpRequest, HttpRequestCtor, HttpResponse, HttpResponseCt
 declare module '@supercharge/contracts' {
   export interface HttpRequest {
     isInertia (): boolean
-    inertiaVersion (): string
+    inertiaVersion (): string | undefined
   }
 
   export interface HttpResponse {
