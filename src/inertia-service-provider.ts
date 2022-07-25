@@ -12,7 +12,7 @@ declare module '@supercharge/contracts' {
   export interface HttpRequest {
     isInertia (): boolean
     isNotInertia (): boolean
-    inertiaVersion (): string
+    inertiaVersion (): string | undefined
   }
 
   export interface HttpResponse {
