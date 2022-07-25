@@ -15,7 +15,7 @@
     "@japa/run-failed-tests": "~1.0.7",
     "@japa/runner": "~2.0.9",
     "@japa/spec-reporter": "~1.1.12",
-    "@supercharge/application": "~3.3.0",
+    "@supercharge/core": "~3.3.0",
     "@supercharge/eslint-config-typescript": "~2.3.0",
     "@supercharge/http": "~3.3.0",
     "@supercharge/tsconfig": "~4.0.0",
