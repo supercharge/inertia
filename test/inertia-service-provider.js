@@ -1,20 +1,17 @@
 'use strict'
 
-const Koa = require('Koa')
 const { expect } = require('expect')
 const Supertest = require('supertest')
 const { Inertia } = require('../dist')
 const { test } = require('@japa/runner')
 const { createApp } = require('./helpers')
-const { HttpContext } = require('@supercharge/http')
+const { Server } = require('@supercharge/http')
 
 const app = createApp()
 
 test.group('InertiaServiceProvider', () => {
   test('registers request macros', async () => {
-    const server = new Koa().use(ctx => {
-      const { request, response } = HttpContext.wrap(ctx, app)
-
+    const server = new Server(app).use(({ request, response }) => {
       expect(typeof request.isInertia === 'function').toBe(true)
       expect(typeof request.isNotInertia === 'function').toBe(true)
       expect(typeof request.inertiaVersion === 'function').toBe(true)
@@ -37,9 +34,7 @@ test.group('InertiaServiceProvider', () => {
   })
 
   test('registers response macros', async () => {
-    const server = new Koa().use(ctx => {
-      const { response } = HttpContext.wrap(ctx, app)
-
+    const server = new Server(app).use(({ request, response }) => {
       expect(typeof response.inertia === 'function').toBe(true)
       expect(response.inertia()).toBeInstanceOf(Inertia)
 
