@@ -3,7 +3,7 @@
 import { Inertia } from './inertia'
 import { InertiaOptions } from './contracts'
 import { ServiceProvider } from '@supercharge/support'
-import { Application, HttpRequest, HttpRequestCtor, HttpResponse, HttpResponseCtor } from '@supercharge/contracts'
+import { Application, HttpRequest, HttpRequestCtor, HttpResponse, HttpResponseCtor, ViewEngine } from '@supercharge/contracts'
 
 /**
  * Extend the Supercharge request interface with the macro’ed inertia properties.
@@ -25,12 +25,24 @@ export class InertiaServiceProvider extends ServiceProvider {
    * Decorate the request and response instances with Inertia methods.
    */
   override register (): void {
+    this.registerInertiaPartialView()
     this.registerInertiaRequestMacros()
     this.registerInertiaResponseMacros()
   }
 
   /**
-   * Register the inertia request macros.
+   * Register the Inertia partial view.
+   */
+  private registerInertiaPartialView (): void {
+    const view = this.app().make<ViewEngine>('view')
+
+    const content = '<div id="app" data-page="{{ page }}"></div>'
+
+    view.registerPartial('inertia', content)
+  }
+
+  /**
+   * Register the Inertia request macros.
    */
   private registerInertiaRequestMacros (): void {
     const Request = this.app().make<HttpRequestCtor>('request')
@@ -48,7 +60,7 @@ export class InertiaServiceProvider extends ServiceProvider {
   }
 
   /**
-   * Register the inertia resposne macros.
+   * Register the Inertia resposne macros.
    */
   private registerInertiaResponseMacros (): void {
     const app = this.app().make<Application>('app')
