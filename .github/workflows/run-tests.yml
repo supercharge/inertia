@@ -13,9 +13,8 @@ jobs:
     strategy:
       matrix:
         node-version: [14.x, 16.x, 18.x]
-        mongodb-version: ['5.0']
 
-    name: Node ${{ matrix.node-version }} - MongoDB ${{ matrix.mongodb-version }}
+    name: Node ${{ matrix.node-version }}
 
     steps:
     - uses: actions/checkout@v2
@@ -24,11 +23,6 @@ jobs:
       uses: actions/setup-node@v2
       with:
         node-version: ${{ matrix.node-version }}
-
-    - name: Start MongoDB
-      uses: supercharge/mongodb-github-action@1.7.0
-      with:
-        mongodb-version: ${{ matrix.mongodb-version }}
 
     - name: Install dependencies
       run: npm install
