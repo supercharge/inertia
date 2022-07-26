@@ -106,7 +106,9 @@ export class Inertia {
      * configured `config.inertia.view` layout. The layout contains the root
      * <div> element for the Inertia application which renders the view.
      */
-    return this.response.view(this.config.view, { page })
+    return await this.response.view(this.config.view, { page: JSON.stringify(page) }, view => {
+      view.layout('') // use an empty layout to avoid rendering the configured default layout
+    })
   }
 
   /**
@@ -118,7 +120,25 @@ export class Inertia {
    * @returns {Boolean}
    */
   protected async hasVersionConflict (): Promise<boolean> {
-    return this.request.isMethod('GET') && this.request.inertiaVersion() !== await this.version()
+    return this.isInertiaGetRequest() && await this.hasVersionMismatch()
+  }
+
+  /**
+   * Determine whether the request comes from Inertia and is a GET request.
+   *
+   * @returns {boolean}
+   */
+  protected isInertiaGetRequest (): boolean {
+    return this.request.isInertia() && this.request.isMethod('GET')
+  }
+
+  /**
+   * Determine whether the Inertia version in the request is different than the server’s asset version.
+   *
+   * @returns {Promise<boolean>}
+   */
+  protected async hasVersionMismatch (): Promise<boolean> {
+    return this.request.inertiaVersion() !== await this.version()
   }
 
   /**
