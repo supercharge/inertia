@@ -22,7 +22,7 @@ declare module '@supercharge/contracts' {
 
 export class InertiaServiceProvider extends ServiceProvider {
   /**
-   * Register MongoDB services into the container.
+   * Decorate the request and response instances with Inertia methods.
    */
   override register (): void {
     this.registerInertiaRequestMacros()
