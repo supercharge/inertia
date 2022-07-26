@@ -3,6 +3,7 @@
 const Path = require('path')
 const { InertiaServiceProvider } = require('../../dist')
 const { HttpServiceProvider } = require('@supercharge/http')
+const { ViewServiceProvider } = require('@supercharge/view')
 const { Application, ErrorHandler } = require('@supercharge/core')
 
 /**
@@ -17,8 +18,6 @@ exports.createApp = function makeApp (inertiaConfig = {}) {
     .createWithAppRoot(Path.resolve(__dirname))
     .withErrorHandler(ErrorHandler)
 
-  app.bind('view', () => viewMock)
-
   app.config()
     .set('app.key', 'app-key-1234')
     .set('inertia', {
@@ -26,17 +25,19 @@ exports.createApp = function makeApp (inertiaConfig = {}) {
       version: '1.0.0',
       ...inertiaConfig
     })
+    .set('view', {
+      driver: 'handlebars',
+      handlebars: {
+        views: app.resourcePath('views'),
+        partials: app.resourcePath('views/partials'),
+        helpers: app.resourcePath('views/helpers'),
+        layouts: app.resourcePath('views/layouts'),
+        defaultLayout: 'app'
+      }
+    })
 
   return app
+    .register(new ViewServiceProvider(app))
     .register(new HttpServiceProvider(app))
     .register(new InertiaServiceProvider(app))
-}
-
-const viewMock = {
-  render () {
-    return '<h1>error-view</h1>'
-  },
-  exists (view) {
-    return view === 'errors/401'
-  }
 }
