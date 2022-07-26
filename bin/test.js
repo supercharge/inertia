@@ -33,7 +33,7 @@ configure({
     reporters: [specReporter()],
     importer: (filePath) => require(filePath),
     filters: {
-      // files: ['mongodb-service-provider.js']
+      // files: ['inertia-service-provider.js']
     }
   }
 })
