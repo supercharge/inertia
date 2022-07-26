@@ -3,6 +3,7 @@
 const Koa = require('Koa')
 const { expect } = require('expect')
 const Supertest = require('supertest')
+const { Inertia } = require('../dist')
 const { test } = require('@japa/runner')
 const { createApp } = require('./helpers')
 const { HttpContext } = require('@supercharge/http')
@@ -40,6 +41,7 @@ test.group('InertiaServiceProvider', () => {
       const { response } = HttpContext.wrap(ctx, app)
 
       expect(typeof response.inertia === 'function').toBe(true)
+      expect(response.inertia()).toBeInstanceOf(Inertia)
 
       return response.payload('ok')
     })
