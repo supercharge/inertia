@@ -89,7 +89,7 @@ export class Inertia {
       component,
       props: responseProps ?? {},
       version: await this.version(),
-      url: this.request.fullUrl(),
+      url: this.request.req().url!
     }
 
     /**
@@ -153,7 +153,7 @@ export class Inertia {
    */
   protected onVersionConflict (): HttpResponse {
     return this.response.status(409).withHeaders({
-      'X-Inertia-Location': this.request.fullUrl()
+      'X-Inertia-Location': this.request.req().url!
     })
   }
 }
