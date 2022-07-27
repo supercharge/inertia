@@ -18,7 +18,6 @@ export class HandleInertiaRequestsMiddleware {
       return response
     }
 
-    // @ts-expect-error
     if (response.hasStatus(302) && request.isMethod(['POST', 'PUT', 'PATCH'])) {
       response.status(303)
     }
