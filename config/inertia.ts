@@ -11,7 +11,6 @@ const inertiaConfig: InertiaOptions = {
    */
   view: 'app',
 
-
   /**
    * This setting defines the asset version generated on the server-side. This
    * asset version will be used by Inertia when sending requests. An Inertia
@@ -24,8 +23,10 @@ const inertiaConfig: InertiaOptions = {
    * a function, you may also use an async function resolving to a string.
    */
   version: async (app: Application) => {
-        return Inertia.manifestFile(app.publicPath('js/manifest.json'))
-    }
+    return Inertia.manifestFile(
+      app.publicPath('js/manifest.json')
+    )
+  }
 }
 
 export default inertiaConfig
