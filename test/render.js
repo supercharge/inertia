@@ -47,7 +47,8 @@ test.group('Inertia render response', () => {
       <title>Supercharge Inertia</title>
     </head>
     <body>
-      <div id="app" data-page="{&quot;component&quot;:&quot;Users/List&quot;,&quot;props&quot;:{&quot;users&quot;:[{&quot;name&quot;:&quot;Marcus&quot;}]},&quot;version&quot;:&quot;1.0.0&quot;,&quot;url&quot;:&quot;/&quot;}"></div>    </body>
+        <div id="app" data-page="{&quot;component&quot;:&quot;Users/List&quot;,&quot;props&quot;:{&quot;users&quot;:[{&quot;name&quot;:&quot;Marcus&quot;}]},&quot;version&quot;:&quot;1.0.0&quot;,&quot;url&quot;:&quot;/&quot;}"></div>
+    </body>
     </html>
 `)
   })
