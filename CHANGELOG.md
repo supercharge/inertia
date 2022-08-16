@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.3.0 - 2022-08-16
+
+### Added
+- bump dependencies
+- add SSR support
+
+
 ## 0.2.0 - 2022-08-11
 
 ### Updated
