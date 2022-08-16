@@ -1,7 +1,7 @@
 'use strict'
 
 import { Application } from '@supercharge/contracts'
-import { Inertia, InertiaOptions } from '../src'
+import { Inertia, InertiaOptions } from '@supercharge/inertia'
 
 const inertiaConfig: InertiaOptions = {
   /**
