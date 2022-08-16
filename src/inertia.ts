@@ -85,7 +85,7 @@ export class Inertia {
 
     //
 
-    // TODO support partial props. For now, just resolve everything
+    // TODO: support partial props. For now, just resolve everything
 
     const page: PageContract = {
       component,
@@ -108,7 +108,7 @@ export class Inertia {
      * configured "render" function. The "render" function returns HTML
      * strings for `head` and `body`. We’re using them as the response.
      */
-    if (this.usesSsr()) {
+    if (this.shouldSsr()) {
       const { head, body } = await this.renderSsrPage(page)
 
       return await this.renderView({
@@ -178,7 +178,7 @@ export class Inertia {
    *
    * @returns {Promise<boolean>}
    */
-  protected usesSsr (): boolean {
+  protected shouldSsr (): boolean {
     return this.config.ssr?.enabled ?? false
   }
 
