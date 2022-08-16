@@ -1,5 +1,6 @@
 'use strict'
 
+import Os from 'node:os'
 import Fs from '@supercharge/fs'
 import { createHash } from 'node:crypto'
 import { resolveRenderFunctionFrom } from './utils'
@@ -111,7 +112,7 @@ export class Inertia {
       const { head, body } = await this.renderSsrPage(page)
 
       return await this.renderView({
-        ssrHead: head.join('\n'),
+        ssrHead: head.join(Os.EOL),
         ssrBody: body
       })
     }
