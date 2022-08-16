@@ -1,7 +1,10 @@
 'use strict'
 
+import Fs from 'node:fs'
+import dedent from 'dedent'
 import { Inertia } from './inertia'
 import { InertiaOptions } from './contracts'
+import { resolveRenderFunctionFrom } from './utils'
 import { ServiceProvider } from '@supercharge/support'
 import { Application, HttpRequest, HttpRequestCtor, HttpResponse, HttpResponseCtor, ViewEngine } from '@supercharge/contracts'
 
@@ -25,7 +28,7 @@ export class InertiaServiceProvider extends ServiceProvider {
    * Decorate the request and response instances with Inertia methods.
    */
   override register (): void {
-    this.registerInertiaPartialView()
+    this.registerInertiaPartialViews()
     this.registerInertiaRequestMacros()
     this.registerInertiaResponseMacros()
   }
@@ -33,12 +36,37 @@ export class InertiaServiceProvider extends ServiceProvider {
   /**
    * Register the Inertia partial view.
    */
-  private registerInertiaPartialView (): void {
-    const view = this.app().make<ViewEngine>('view')
+  private registerInertiaPartialViews (): void {
+    this.registerInertiaPartial()
+    this.registerInertiaHeadPartial()
+  }
 
-    const content = '<div id="app" data-page="{{ page }}"></div>'
+  /**
+   * Register the `inertia` partial view.
+   */
+  private registerInertiaPartial (): void {
+    this.app()
+      .make<ViewEngine>('view')
+      .registerPartial('inertia', dedent(`
+        {{#if ssrBody}}
+          {{{ ssrBody }}}
+        {{ else }}
+          <div id="app" data-page="{{ page }}"></div>
+        {{/if}}
+      `))
+  }
 
-    view.registerPartial('inertia', content)
+  /**
+   * Register the `inertiaHead` partial view.
+   */
+  private registerInertiaHeadPartial (): void {
+    this.app()
+      .make<ViewEngine>('view')
+      .registerPartial('inertiaHead', dedent(`
+        {{#if ssrHead}}
+        {{{ ssrHead }}}
+        {{/if}}
+      `))
   }
 
   /**
@@ -65,10 +93,31 @@ export class InertiaServiceProvider extends ServiceProvider {
   private registerInertiaResponseMacros (): void {
     const app = this.app().make<Application>('app')
     const Response = this.app().make<HttpResponseCtor>('response')
-    const inertiaConfig = app.config().get<InertiaOptions>('inertia', { view: 'app' })
+    const inertiaConfig = app.config().get<InertiaOptions>('inertia', { view: 'app', ssr: { enabled: false } })
+
+    if (inertiaConfig.ssr?.enabled) {
+      this.ensureSsrRenderFunction(inertiaConfig)
+    }
 
     Response.macro('inertia', function (this: HttpResponse) {
       return new Inertia(app, this.ctx(), inertiaConfig)
     })
+  }
+
+  /**
+   * Ensure the configured SSR render function is available.
+   */
+  private ensureSsrRenderFunction (inertiaConfig: InertiaOptions): void {
+    const renderFunctionPath = inertiaConfig.ssr?.resolveRenderFunctionFrom
+
+    if (!renderFunctionPath) {
+      throw new Error('Inertia SSR is enabled but the path to the file exporting the render function is missing.')
+    }
+
+    if (!Fs.existsSync(renderFunctionPath)) {
+      throw new Error(`Inertia SSR is enabled but we cannot resolve the file at "${renderFunctionPath}".`)
+    }
+
+    resolveRenderFunctionFrom(renderFunctionPath)
   }
 }

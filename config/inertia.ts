@@ -26,6 +26,27 @@ const inertiaConfig: InertiaOptions = {
     return Inertia.manifestFile(
       app.publicPath('js/manifest.json')
     )
+  },
+
+  /**
+   * This setting configures the server-side rendering when using Inertia. You
+   * can disable server-side rendering generally by using the toggle setting
+   * `enabled`. When enabled, you must provide a render function file path.
+   */
+  ssr: {
+    /**
+     * This setting controls whether server-side rendering is enabled or not.
+     * SSR is useful when you want to render the application on the server
+     * and deliver the rendered HTML to the client.
+     */
+    enabled: true,
+
+    /**
+     * This setting defines the file path that exposes a render function. The
+     * render function is required for Inertia to create the rendered HTML.
+     * Your file may use a default export or a named "render" export.
+     */
+    resolveRenderFunctionFrom: 'bootstrap/ssr.js'
   }
 }
 

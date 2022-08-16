@@ -1,7 +1,9 @@
 'use strict'
 
+import Os from 'node:os'
 import Fs from '@supercharge/fs'
 import { createHash } from 'node:crypto'
+import { resolveRenderFunctionFrom } from './utils'
 import { InertiaOptions, InertiaVersionValue, PageContract } from './contracts'
 import { Application, HttpContext, HttpRequest, HttpResponse } from '@supercharge/contracts'
 
@@ -83,7 +85,7 @@ export class Inertia {
 
     //
 
-    // TODO support partial props. For now, just resolve everything
+    // TODO: support partial props. For now, just resolve everything
 
     const page: PageContract = {
       component,
@@ -102,12 +104,26 @@ export class Inertia {
     }
 
     /**
+     * When using server-side rendering (SSR), we render the page using the
+     * configured "render" function. The "render" function returns HTML
+     * strings for `head` and `body`. We’re using them as the response.
+     */
+    if (this.shouldSsr()) {
+      const { head, body } = await this.renderSsrPage(page)
+
+      return await this.renderView({
+        ssrHead: head.join(Os.EOL),
+        ssrBody: body
+      })
+    }
+
+    /**
      * Initial page rendering requests receive a HTML response. This renders the
      * configured `config.inertia.view` layout. The layout contains the root
      * <div> element for the Inertia application which renders the view.
      */
-    return await this.response.view(this.config.view, { page: JSON.stringify(page) }, view => {
-      view.layout('') // use an empty layout to avoid rendering the configured default layout
+    return await this.renderView({
+      page: JSON.stringify(page)
     })
   }
 
@@ -154,6 +170,37 @@ export class Inertia {
   protected onVersionConflict (): HttpResponse {
     return this.response.status(409).withHeaders({
       'X-Inertia-Location': this.request.req().url!
+    })
+  }
+
+  /**
+   * Determine whether the Inertia version in the request is different than the server’s asset version.
+   *
+   * @returns {Promise<boolean>}
+   */
+  protected shouldSsr (): boolean {
+    return this.config.ssr?.enabled ?? false
+  }
+
+  /**
+   * Render the given `page` using the configured server-side rendering function.
+   *
+   * We’re already validating the existence of the render function in the Inertia
+   * service provider. We can assume the referenced file exists and is exposing
+   * a "render" function either via a "default" export a named "render" export.
+   */
+  protected async renderSsrPage (page: PageContract): Promise<{ head: string[], body: string }> {
+    const render = resolveRenderFunctionFrom(this.config.ssr!.resolveRenderFunctionFrom!)
+
+    return render(page)
+  }
+
+  /**
+   * Returns the rendered HTML view using the given `props`.
+   */
+  protected async renderView (data: any): Promise<HttpResponse> {
+    return this.response.view(this.config.view, data, view => {
+      view.layout('') // use an empty layout to avoid rendering the configured default layout
     })
   }
 }
