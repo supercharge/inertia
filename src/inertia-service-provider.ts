@@ -49,7 +49,7 @@ export class InertiaServiceProvider extends ServiceProvider {
       .make<ViewEngine>('view')
       .registerPartial('inertia', dedent(`
         {{#if ssrBody}}
-          {{ ssrBody }}
+          {{{ ssrBody }}}
         {{ else }}
           <div id="app" data-page="{{ page }}"></div>
         {{/if}}
@@ -62,7 +62,11 @@ export class InertiaServiceProvider extends ServiceProvider {
   private registerInertiaHeadPartial (): void {
     this.app()
       .make<ViewEngine>('view')
-      .registerPartial('inertiaHead', '{{ ssrHead }}')
+      .registerPartial('inertiaHead', dedent(`
+        {{#if ssrHead}}
+        {{{ ssrHead }}}
+        {{/if}}
+      `))
   }
 
   /**
