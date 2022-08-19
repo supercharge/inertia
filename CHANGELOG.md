@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.4.0 - 2022-08-xx
+
+### Added
+- `request.inertia()` method: returns a request-related Inertia instance resolving Inertia data from the request
+- support Inertia partial reloads
+- support Inertia lazy data evaluation
+
+### Updated
+- bump dependencies
+- add dedicated `InertiaRequest` and `InertiaResponse` classes
+- the generic `Inertia` class exposes utility functions only
+
+### Breaking Changes
+- removed `request.inertiaVersion()` method in favor of `request.inertia().version()`
+
 ## 0.3.1 - 2022-08-17
 
 ### Updated

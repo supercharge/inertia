@@ -2,9 +2,10 @@
 
 import Fs from 'node:fs'
 import dedent from 'dedent'
-import { Inertia } from './inertia'
 import { InertiaOptions } from './contracts'
+import { InertiaRequest } from './inertia-request'
 import { resolveRenderFunctionFrom } from './utils'
+import { InertiaResponse } from './inertia-response'
 import { ServiceProvider } from '@supercharge/support'
 import { Application, HttpRequest, HttpRequestCtor, HttpResponse, HttpResponseCtor, ViewEngine } from '@supercharge/contracts'
 
@@ -13,13 +14,27 @@ import { Application, HttpRequest, HttpRequestCtor, HttpResponse, HttpResponseCt
  */
 declare module '@supercharge/contracts' {
   export interface HttpRequest {
+    /**
+     * Returns the Inertia request instance.
+     */
+    inertia (): InertiaRequest
+
+    /**
+     * Determine whether the request is an Inertia request.
+     */
     isInertia (): boolean
+
+    /**
+     * Determine whether the request is not an Inertia request.
+     */
     isNotInertia (): boolean
-    inertiaVersion (): string | undefined
   }
 
   export interface HttpResponse {
-    inertia (): Inertia
+    /**
+     * Returnst the Inertia response instance.
+     */
+    inertia (): InertiaResponse
   }
 }
 
@@ -76,14 +91,14 @@ export class InertiaServiceProvider extends ServiceProvider {
     const Request = this.app().make<HttpRequestCtor>('request')
 
     Request
+      .macro('inertia', function (this: HttpRequest) {
+        return new InertiaRequest(this)
+      })
       .macro('isInertia', function (this: HttpRequest) {
-        return this.hasHeader('x-inertia')
+        return this.inertia().isInertia()
       })
       .macro('isNotInertia', function (this: HttpRequest) {
-        return !this.isInertia()
-      })
-      .macro('inertiaVersion', function (this: HttpRequest) {
-        return this.header('x-inertia-version')
+        return this.inertia().isNotInertia()
       })
   }
 
@@ -100,7 +115,7 @@ export class InertiaServiceProvider extends ServiceProvider {
     }
 
     Response.macro('inertia', function (this: HttpResponse) {
-      return new Inertia(app, this.ctx(), inertiaConfig)
+      return new InertiaResponse(app, this.ctx(), inertiaConfig)
     })
   }
 
