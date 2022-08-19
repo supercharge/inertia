@@ -31,7 +31,7 @@ test.group('Inertia render response', () => {
 
     server.use(({ response }) => {
       return response.inertia().render('Users/List', {
-        users: [{ name: 'Marcus' }]
+        users: [{ name: 'Supercharge' }]
       })
     })
 
@@ -48,7 +48,7 @@ test.group('Inertia render response', () => {
 
     </head>
     <body>
-        <div id="app" data-page="{&quot;component&quot;:&quot;Users/List&quot;,&quot;props&quot;:{&quot;users&quot;:[{&quot;name&quot;:&quot;Marcus&quot;}]},&quot;version&quot;:&quot;1.0.0&quot;,&quot;url&quot;:&quot;/&quot;}"></div>
+        <div id="app" data-page="{&quot;component&quot;:&quot;Users/List&quot;,&quot;props&quot;:{&quot;users&quot;:[{&quot;name&quot;:&quot;Supercharge&quot;}]},&quot;version&quot;:&quot;1.0.0&quot;,&quot;url&quot;:&quot;/&quot;}"></div>
     </body>
     </html>
 `)
@@ -60,7 +60,7 @@ test.group('Inertia render response', () => {
 
     server.use(({ response }) => {
       return response.inertia().render('Users/List', {
-        users: [{ name: 'Marcus' }]
+        users: [{ name: 'Supercharge' }]
       })
     })
 
@@ -72,7 +72,7 @@ test.group('Inertia render response', () => {
 
     expect(response.body).toEqual({
       component: 'Users/List',
-      props: { users: [{ name: 'Marcus' }] },
+      props: { users: [{ name: 'Supercharge' }] },
       version: '1.0.0',
       url: '/'
     })
@@ -117,6 +117,110 @@ test.group('Inertia render response', () => {
     expect(response.body).toEqual({
       component: 'Users/List',
       props: {},
+      version: '1.0.0',
+      url: '/some/path?foo=bar'
+    })
+  })
+
+  test('resolves lazy props', async () => {
+    const app = await createApp()
+    const server = new Server(app)
+
+    server.use(({ response }) => {
+      return response.inertia().render('Users/List', {
+        users: () => [{ name: 'Supercharge' }],
+        name: async () => {
+          return await new Promise(resolve => {
+            setTimeout(resolve('Supercharge'), 10)
+          })
+        },
+        nested: {
+          users: () => [{ name: 'Supercharge' }],
+          name: async () => {
+            return await new Promise(resolve => {
+              setTimeout(resolve('Supercharge'), 10)
+            })
+          }
+        }
+      })
+    })
+
+    const response = await Supertest(server.callback())
+      .get('/some/path?foo=bar')
+      .set('X-Inertia', 'true')
+      .set('X-Inertia-Version', '1.0.0')
+      .expect(200)
+
+    expect(response.body).toEqual({
+      component: 'Users/List',
+      props: {
+        name: 'Supercharge',
+        users: [{ name: 'Supercharge' }],
+        nested: {
+          name: 'Supercharge',
+          users: [{ name: 'Supercharge' }]
+        }
+      },
+      version: '1.0.0',
+      url: '/some/path?foo=bar'
+    })
+  })
+
+  test('returns partial data', async () => {
+    const app = await createApp()
+    const server = new Server(app)
+
+    server.use(({ response }) => {
+      return response.inertia().render('Users/List', {
+        users: () => [{ name: 'Supercharge' }],
+        name: 'Supercharge'
+      })
+    })
+
+    const response = await Supertest(server.callback())
+      .get('/some/path?foo=bar')
+      .set('X-Inertia', 'true')
+      .set('X-Inertia-Version', '1.0.0')
+      .set('X-Inertia-Partial-Data', 'users')
+      .set('X-Inertia-Partial-Component', 'Users/List')
+      .expect(200)
+
+    expect(response.body.props.name).toBeUndefined()
+    expect(response.body).toEqual({
+      component: 'Users/List',
+      props: {
+        users: [{ name: 'Supercharge' }]
+      },
+      version: '1.0.0',
+      url: '/some/path?foo=bar'
+    })
+  })
+
+  test('returns full data when rendering different component', async () => {
+    const app = await createApp()
+    const server = new Server(app)
+
+    server.use(({ response }) => {
+      return response.inertia().render('Users/List', {
+        users: () => [{ name: 'Supercharge' }],
+        name: 'Supercharge'
+      })
+    })
+
+    const response = await Supertest(server.callback())
+      .get('/some/path?foo=bar')
+      .set('X-Inertia', 'true')
+      .set('X-Inertia-Version', '1.0.0')
+      .set('X-Inertia-Partial-Data', 'users')
+      .set('X-Inertia-Partial-Component', 'Other/Component')
+      .expect(200)
+
+    expect(response.body).toEqual({
+      component: 'Users/List',
+      props: {
+        name: 'Supercharge',
+        users: [{ name: 'Supercharge' }]
+      },
       version: '1.0.0',
       url: '/some/path?foo=bar'
     })

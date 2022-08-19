@@ -2,24 +2,26 @@
 
 const { expect } = require('expect')
 const Supertest = require('supertest')
-const { Inertia } = require('../dist')
 const { test } = require('@japa/runner')
 const { createApp } = require('./helpers')
 const { Server } = require('@supercharge/http')
+const { InertiaRequest, InertiaResponse } = require('../dist')
 
 const app = createApp()
 
 test.group('InertiaServiceProvider', () => {
   test('registers request macros', async () => {
     const server = new Server(app).use(({ request, response }) => {
+      expect(typeof request.inertia === 'function').toBe(true)
+      expect(request.inertia()).toBeInstanceOf(InertiaRequest)
+
       expect(typeof request.isInertia === 'function').toBe(true)
       expect(typeof request.isNotInertia === 'function').toBe(true)
-      expect(typeof request.inertiaVersion === 'function').toBe(true)
 
       return response.payload({
         isInertia: request.isInertia(),
         isNotInertia: request.isNotInertia(),
-        inertiaVersion: request.inertiaVersion()
+        inertiaVersion: request.inertia().version()
       })
     })
 
@@ -34,9 +36,9 @@ test.group('InertiaServiceProvider', () => {
   })
 
   test('registers response macros', async () => {
-    const server = new Server(app).use(({ request, response }) => {
+    const server = new Server(app).use(({ response }) => {
       expect(typeof response.inertia === 'function').toBe(true)
-      expect(response.inertia()).toBeInstanceOf(Inertia)
+      expect(response.inertia()).toBeInstanceOf(InertiaResponse)
 
       return response.payload('ok')
     })
