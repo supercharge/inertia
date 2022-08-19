@@ -62,4 +62,15 @@ export class InertiaRequest {
   partialComponent (): string {
     return this.request.header('x-inertia-partial-component', '') as string
   }
+
+  /**
+    * Determine whether the request is a partial reload. Partial reloads only
+    * work for requests made to the same page component. If the destination
+    * is a different component, then no partial reload will be performed.
+    *
+    * @see https://inertiajs.com/the-protocol#partial-reloads
+    */
+  shouldPartiallyReload (component: string): boolean {
+    return this.wantsPartialData() && this.partialComponent() === component
+  }
 }
