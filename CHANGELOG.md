@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.4.0 - 2022-08-xx
+## 0.4.0 - 2022-08-19
 
 ### Added
 - `request.inertia()` method: returns a request-related Inertia instance resolving Inertia data from the request
