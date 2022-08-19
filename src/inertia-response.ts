@@ -154,19 +154,24 @@ export class InertiaResponse {
   /**
    * Returns the resolved response `props`. Resolving the props means filtering
    * for partial reloads and evaluating lazy prop functions if any is present.
-   *
-   * @see https://inertiajs.com/the-protocol#partial-reloads
    */
   protected async resolveProps (props: Record<string, unknown>, component: string): Promise<Record<string, unknown>> {
-    if (this.shouldPartiallyReload(component)) {
-      const partials = Object.entries(props).filter(([key]) => {
-        return this.request.inertia().partialData().includes(key)
-      })
-
-      props = Object.fromEntries(partials)
+    if (this.request.inertia().shouldPartiallyReload(component)) {
+      props = this.filterPartialData(props)
     }
 
     return await this.resolvePropertyInstances(props)
+  }
+
+  /**
+   * Returns only those props that should be reloaded.
+   */
+  filterPartialData (props: Record<string, unknown>): Record<string, unknown> {
+    const partials = Object.entries(props).filter(([key]) => {
+      return this.request.inertia().partialData().includes(key)
+    })
+
+    return Object.fromEntries(partials)
   }
 
   /**
@@ -219,16 +224,5 @@ export class InertiaResponse {
     return this.response.view(this.config.view, data, view => {
       view.layout('') // use an empty layout to avoid rendering the configured default layout
     })
-  }
-
-  /**
-    * Determine whether the request is a partial reload. Partial reloads only
-    * work for requests made to the same page component. If the destination
-    * is a different component, then no partial reload will be performed.
-    *
-    * @see https://inertiajs.com/the-protocol#partial-reloads
-    */
-  shouldPartiallyReload (component: string): boolean {
-    return this.request.inertia().wantsPartialData() && this.request.inertia().partialComponent() === component
   }
 }
