@@ -39,7 +39,9 @@ export class InertiaRequest extends SharesData {
    * @see https://inertiajs.com/the-protocol#partial-reloads
    */
   partialData (): string[] {
-    return (this.request.header('x-inertia-partial-data', '') as string).split(',')
+    return (this.request.header('x-inertia-partial-data', '') as string)
+      .split(',')
+      .map(key => key.trim())
   }
 
   /**
