@@ -1,21 +1,17 @@
 'use strict'
 
 import Os from 'node:os'
+import { SharesData } from './shares-data'
 import { resolveRenderFunctionFrom } from './utils'
 import { isAsyncFunction } from '@supercharge/goodies'
 import { InertiaOptions, InertiaVersionValue, PageContract } from './contracts'
-import { Application, HttpContext, HttpRequest, HttpResponse } from '@supercharge/contracts'
+import { Application, HttpContext, HttpResponse } from '@supercharge/contracts'
 
-export class InertiaResponse {
+export class InertiaResponse extends SharesData {
   /**
    * Stores the reference to application instance.
    */
   private readonly app: Application
-
-  /**
-   * Stores the reference to the HTTP request.
-   */
-  private readonly request: HttpRequest
 
   /**
    * Stores the reference to the HTTP response.
@@ -31,9 +27,10 @@ export class InertiaResponse {
    * Create a new instance.
    */
   constructor (app: Application, { request, response }: HttpContext, config: InertiaOptions) {
+    super(request)
+
     this.app = app
     this.config = config
-    this.request = request
     this.response = response
   }
 
@@ -156,6 +153,8 @@ export class InertiaResponse {
    * for partial reloads and evaluating lazy prop functions if any is present.
    */
   protected async resolveProps (props: Record<string, unknown>, component: string): Promise<Record<string, unknown>> {
+    props = this.share(props).sharedData()
+
     if (this.request.inertia().shouldPartiallyReload(component)) {
       props = this.filterPartialData(props)
     }

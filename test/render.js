@@ -225,4 +225,48 @@ test.group('Inertia render response', () => {
       url: '/some/path?foo=bar'
     })
   })
+
+  test('shares data', async () => {
+    const app = await createApp()
+    const server = new Server(app)
+
+    server
+      .use(async ({ request, response }, next) => {
+        response.inertia().share({
+          appName: 'Supercharge',
+          shared: async () => 'async-shared-data'
+        })
+
+        request.inertia().share({
+          user: () => {
+            return { name: 'Marcus' }
+          }
+        })
+
+        await next()
+      })
+      .use(({ response }) => {
+        return response.inertia().render('Users/List', {
+          users: [{ name: 'Supercharge' }]
+        })
+      })
+
+    const response = await Supertest(server.callback())
+      .get('/')
+      .set('X-Inertia', 'true')
+      .set('X-Inertia-Version', '1.0.0')
+      .expect(200)
+
+    expect(response.body).toEqual({
+      component: 'Users/List',
+      props: {
+        appName: 'Supercharge',
+        user: { name: 'Marcus' },
+        shared: 'async-shared-data',
+        users: [{ name: 'Supercharge' }]
+      },
+      version: '1.0.0',
+      url: '/'
+    })
+  })
 })

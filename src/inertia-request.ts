@@ -1,20 +1,8 @@
 'use strict'
 
-import { HttpRequest } from '@supercharge/contracts'
+import { SharesData } from './shares-data'
 
-export class InertiaRequest {
-  /**
-   * Stores the reference to the HTTP request.
-   */
-  private readonly request: HttpRequest
-
-  /**
-   * Create a new instance.
-   */
-  constructor (request: HttpRequest) {
-    this.request = request
-  }
-
+export class InertiaRequest extends SharesData {
   /**
    * Determine whether the request is an Inertia request.
    */
