@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.1.0 - 2022-0x-xx
+
+### Updated
+- update visibility to `protected` for internal `response.inertia().filterPartialData()` method
+
+
 ## 1.0.0 - 2022-08-22
 
 ### Added
