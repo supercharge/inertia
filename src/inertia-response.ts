@@ -165,7 +165,7 @@ export class InertiaResponse extends SharesData {
   /**
    * Returns only those props that should be reloaded.
    */
-  filterPartialData (props: Record<string, unknown>): Record<string, unknown> {
+  protected filterPartialData (props: Record<string, unknown>): Record<string, unknown> {
     const partials = Object.entries(props).filter(([key]) => {
       return this.request.inertia().partialData().includes(key)
     })
