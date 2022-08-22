@@ -1,5 +1,17 @@
 # Changelog
 
+## 1.0.0 - 2022-08-22
+
+### Added
+- `request.inertia().share(data)` method: share data along the request lifecycle and add the shared data to the Inertia response
+- `request.inertia().sharedData()` method: retrieve the shared data
+- add `SharesData` class
+- make `InertiaRequest` and `InertiaResponse` instances extend the `SharesData` class allowing you to share data from `request.inertia()` and `response.inertia()`
+
+### Updated
+- bump dependencies
+
+
 ## 0.4.0 - 2022-08-19
 
 ### Added
