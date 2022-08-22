@@ -1,20 +1,8 @@
 'use strict'
 
-import { HttpRequest } from '@supercharge/contracts'
+import { SharesData } from './shares-data'
 
-export class InertiaRequest {
-  /**
-   * Stores the reference to the HTTP request.
-   */
-  private readonly request: HttpRequest
-
-  /**
-   * Create a new instance.
-   */
-  constructor (request: HttpRequest) {
-    this.request = request
-  }
-
+export class InertiaRequest extends SharesData {
   /**
    * Determine whether the request is an Inertia request.
    */
@@ -51,7 +39,9 @@ export class InertiaRequest {
    * @see https://inertiajs.com/the-protocol#partial-reloads
    */
   partialData (): string[] {
-    return (this.request.header('x-inertia-partial-data', '') as string).split(',')
+    return (this.request.header('x-inertia-partial-data', '') as string)
+      .split(',')
+      .map(key => key.trim())
   }
 
   /**
