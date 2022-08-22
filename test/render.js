@@ -198,6 +198,38 @@ test.group('Inertia render response', () => {
     })
   })
 
+  test('returns partial data and supports spaces between partial data keys', async () => {
+    const app = await createApp()
+    const server = new Server(app)
+
+    server.use(({ response }) => {
+      return response.inertia().render('Users/List', {
+        users: () => [{ name: 'Supercharge' }],
+        name: 'Supercharge',
+        'keep-me': 'Supercharge'
+      })
+    })
+
+    const response = await Supertest(server.callback())
+      .get('/some/path?foo=bar')
+      .set('X-Inertia', 'true')
+      .set('X-Inertia-Version', '1.0.0')
+      .set('X-Inertia-Partial-Data', 'users, keep-me')
+      .set('X-Inertia-Partial-Component', 'Users/List')
+      .expect(200)
+
+    expect(response.body.props.name).toBeUndefined()
+    expect(response.body).toEqual({
+      component: 'Users/List',
+      props: {
+        users: [{ name: 'Supercharge' }],
+        'keep-me': 'Supercharge'
+      },
+      version: '1.0.0',
+      url: '/some/path?foo=bar'
+    })
+  })
+
   test('returns full data when rendering different component', async () => {
     const app = await createApp()
     const server = new Server(app)
