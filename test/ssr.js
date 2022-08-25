@@ -40,7 +40,7 @@ test.group('Inertia SSR', () => {
       .expect(200)
 
     expect(response.text).toEqual(`<!DOCTYPE html>
-    <html lang="en">
+  <html lang="en">
     <head>
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -51,7 +51,7 @@ test.group('Inertia SSR', () => {
     <body>
         <h1>Hello Test SSR: Supercharge</h1>
     </body>
-    </html>
+  </html>
 `)
   })
 
@@ -70,7 +70,7 @@ test.group('Inertia SSR', () => {
       .expect(200)
 
     expect(response.text).toEqual(`<!DOCTYPE html>
-    <html lang="en">
+  <html lang="en">
     <head>
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -81,7 +81,7 @@ test.group('Inertia SSR', () => {
     <body>
         <h1>Hello Test SSR: Supercharge</h1>
     </body>
-    </html>
+  </html>
 `)
   })
 
@@ -100,7 +100,7 @@ test.group('Inertia SSR', () => {
       .expect(200)
 
     expect(response.text).toEqual(`<!DOCTYPE html>
-    <html lang="en">
+  <html lang="en">
     <head>
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -111,7 +111,7 @@ test.group('Inertia SSR', () => {
     <body>
         <h1>Hello Test SSR: Supercharge</h1>
     </body>
-    </html>
+  </html>
 `)
   })
 })

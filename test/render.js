@@ -40,7 +40,7 @@ test.group('Inertia render response', () => {
       .expect(200)
 
     expect(response.text).toEqual(`<!DOCTYPE html>
-    <html lang="en">
+  <html lang="en">
     <head>
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -50,7 +50,7 @@ test.group('Inertia render response', () => {
     <body>
         <div id="app" data-page="{&quot;component&quot;:&quot;Users/List&quot;,&quot;props&quot;:{&quot;users&quot;:[{&quot;name&quot;:&quot;Supercharge&quot;}]},&quot;version&quot;:&quot;1.0.0&quot;,&quot;url&quot;:&quot;/&quot;}"></div>
     </body>
-    </html>
+  </html>
 `)
   })
 
