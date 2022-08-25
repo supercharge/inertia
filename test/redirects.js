@@ -116,4 +116,32 @@ test.group('Inertia Redirects', () => {
       .set('X-Inertia', 'true')
       .expect(302)
   })
+
+  test('uses response status code 409 for internal redirect', async () => {
+    const app = await createApp()
+    const server = new Server(app)
+      .use(HandleInertiaRequestsMiddleware)
+      .use(({ response }) => {
+        return response.inertia().location('/profile')
+      })
+
+    await Supertest(server.callback())
+      .get('/')
+      .set('X-Inertia', 'true')
+      .expect(409)
+  })
+
+  test('uses response status code 409 for external redirect', async () => {
+    const app = await createApp()
+    const server = new Server(app)
+      .use(HandleInertiaRequestsMiddleware)
+      .use(({ response }) => {
+        return response.inertia().location('https://superchargejs.com')
+      })
+
+    await Supertest(server.callback())
+      .get('/')
+      .set('X-Inertia', 'true')
+      .expect(409)
+  })
 })

@@ -4,8 +4,8 @@ import Os from 'node:os'
 import { SharesData } from './shares-data'
 import { resolveRenderFunctionFrom } from './utils'
 import { isAsyncFunction } from '@supercharge/goodies'
-import { InertiaOptions, InertiaVersionValue, PageContract } from './contracts'
 import { Application, HttpContext, HttpResponse } from '@supercharge/contracts'
+import { InertiaOptions, InertiaVersionValue, PageContract } from './contracts'
 
 export class InertiaResponse extends SharesData {
   /**
@@ -46,6 +46,17 @@ export class InertiaResponse extends SharesData {
   }
 
   /**
+   * Returns a server-initiated Inertia redirect to the given `url`.
+   *
+   * @param {String} url
+   *
+   * @returns {HttpResponse}
+   */
+  location (url: string): HttpResponse {
+    return this.response.status(409).withHeaders({ 'X-Inertia-Location': url })
+  }
+
+  /**
    * Render the inertia component.
    *
    * @param component
@@ -75,7 +86,7 @@ export class InertiaResponse extends SharesData {
      * request object and we determine whether this is an Inertia request.
      */
     if (this.request.isInertia()) {
-      return this.response.payload(page).header('X-Inertia', 'true')
+      return this.response.payload(page).withHeaders({ 'X-Inertia': 'true' })
     }
 
     /**
@@ -140,12 +151,10 @@ export class InertiaResponse extends SharesData {
    * @param request
    * @param response
    *
-   * @returns
+   * @returns {HttpResponse}
    */
   protected onVersionConflict (): HttpResponse {
-    return this.response.status(409).withHeaders({
-      'X-Inertia-Location': this.request.req().url!
-    })
+    return this.location(this.request.req().url!)
   }
 
   /**
