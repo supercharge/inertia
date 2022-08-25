@@ -51,7 +51,7 @@ export class InertiaServiceProvider extends ServiceProvider {
   /**
    * Register the Inertia partial view.
    */
-  private registerInertiaPartialViews (): void {
+  protected registerInertiaPartialViews (): void {
     this.registerInertiaPartial()
     this.registerInertiaHeadPartial()
   }
@@ -59,7 +59,7 @@ export class InertiaServiceProvider extends ServiceProvider {
   /**
    * Register the `inertia` partial view.
    */
-  private registerInertiaPartial (): void {
+  protected registerInertiaPartial (): void {
     this.app()
       .make<ViewEngine>('view')
       .registerPartial('inertia', dedent(`
@@ -74,7 +74,7 @@ export class InertiaServiceProvider extends ServiceProvider {
   /**
    * Register the `inertiaHead` partial view.
    */
-  private registerInertiaHeadPartial (): void {
+  protected registerInertiaHeadPartial (): void {
     this.app()
       .make<ViewEngine>('view')
       .registerPartial('inertiaHead', dedent(`
@@ -87,7 +87,7 @@ export class InertiaServiceProvider extends ServiceProvider {
   /**
    * Register the Inertia request macros.
    */
-  private registerInertiaRequestMacros (): void {
+  protected registerInertiaRequestMacros (): void {
     const Request = this.app().make<HttpRequestCtor>('request')
 
     Request
@@ -105,7 +105,7 @@ export class InertiaServiceProvider extends ServiceProvider {
   /**
    * Register the Inertia resposne macros.
    */
-  private registerInertiaResponseMacros (): void {
+  protected registerInertiaResponseMacros (): void {
     const app = this.app().make<Application>('app')
     const Response = this.app().make<HttpResponseCtor>('response')
     const inertiaConfig = app.config().get<InertiaOptions>('inertia', { view: 'app', ssr: { enabled: false } })
@@ -122,7 +122,7 @@ export class InertiaServiceProvider extends ServiceProvider {
   /**
    * Ensure the configured SSR render function is available.
    */
-  private ensureSsrRenderFunction (inertiaConfig: InertiaOptions): void {
+  protected ensureSsrRenderFunction (inertiaConfig: InertiaOptions): void {
     const renderFunctionPath = inertiaConfig.ssr?.resolveRenderFunctionFrom
 
     if (!renderFunctionPath) {
