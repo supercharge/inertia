@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.1.0 - 2022-08-xx
+## 1.1.0 - 2022-08-25
 
 ### Added
 - add `share` method to middleware: allowing users to share props in a single place
