@@ -2,6 +2,9 @@
 
 ## 1.1.0 - 2022-0x-xx
 
+### Added
+- add `share` method to middleware: allowing users to share props in a single place
+
 ### Updated
 - update visibility to `protected` for internal `response.inertia().filterPartialData()` method
 
