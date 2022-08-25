@@ -1,9 +1,10 @@
 # Changelog
 
-## 1.1.0 - 2022-0x-xx
+## 1.1.0 - 2022-08-xx
 
 ### Added
 - add `share` method to middleware: allowing users to share props in a single place
+- add `response.inertia().location(<url>)` method: redirect requests to the given internal or external `url`
 
 ### Updated
 - update visibility to `protected` for internal `response.inertia().filterPartialData()` method
