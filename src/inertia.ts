@@ -12,12 +12,12 @@ export class Inertia {
    * @returns {Promise<string>}
    */
   public static async manifestFile (manifestFilePath: string): Promise<string> {
-    if (await Fs.exists(manifestFilePath)) {
-      const content = await Fs.content(manifestFilePath)
-
-      return createHash('md5').update(content).digest('hex')
+    if (await Fs.notExists(manifestFilePath)) {
+      throw new Error(`Manifest file "${manifestFilePath}" does not exist.`)
     }
 
-    throw new Error(`Manifest file "${manifestFilePath}" does not exist.`)
+    return createHash('md5').update(
+      await Fs.content(manifestFilePath)
+    ).digest('hex')
   }
 }
