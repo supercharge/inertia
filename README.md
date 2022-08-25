@@ -30,7 +30,7 @@
 ---
 
 ## Introduction
-The `@supercharge/inertia` package provides …
+The `@supercharge/inertia` package adds support for [Inertia](https://inertiajs.com) to the Supercharge framework.
 
 
 ## Installation
