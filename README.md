@@ -45,10 +45,6 @@ npm i @supercharge/inertia
 - 📖 [Documentation](https://superchargejs.com/docs/inertia)
 
 
-## Compatibility
-Tbd.
-
-
 ## Contributing
 Do you miss a function? We very much appreciate your contribution! Please send in a pull request 😊
 
