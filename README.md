@@ -45,6 +45,14 @@ npm i @supercharge/inertia
 - 📖 [Documentation](https://superchargejs.com/docs/inertia)
 
 
+## Compatibility
+This package is compatible with Supercharge `3.x` or later:
+
+| Major Release | [Supercharge](https://github.com/supercharge/supercharge) version | Node.js version |
+| ----- | ----- | ------ |
+| `1.x` | `3.x` | `>=16` |
+
+
 ## Contributing
 Do you miss a function? We very much appreciate your contribution! Please send in a pull request 😊
 
