@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.1.1 - 2022-09-xx
+
+### Updated
+- register partial views, request and response decorations in the service provider’s `boot` method (instead of `register`) which makes sure the container bindings are available
+
 ## 1.1.0 - 2022-08-25
 
 ### Added

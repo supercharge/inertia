@@ -42,7 +42,7 @@ export class InertiaServiceProvider extends ServiceProvider {
   /**
    * Decorate the request and response instances with Inertia methods.
    */
-  override register (): void {
+  override async boot (): Promise<void> {
     this.registerInertiaPartialViews()
     this.registerInertiaRequestMacros()
     this.registerInertiaResponseMacros()
