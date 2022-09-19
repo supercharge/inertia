@@ -1,11 +1,15 @@
 # Changelog
 
-## 1.1.1 - 2022-09-xx
+## [1.2.0](https://github.com/supercharge/inertia/compare/v1.1.0...v1.2.0) - 2022-09-19
 
-### Updated
+### Added
 - register partial views, request and response decorations in the service provider’s `boot` method (instead of `register`) which makes sure the container bindings are available
 
-## 1.1.0 - 2022-08-25
+### Updated
+- bump dependencies
+
+
+## [1.1.0](https://github.com/supercharge/inertia/compare/v1.0.0...v1.1.0) - 2022-08-25
 
 ### Added
 - add `share` method to middleware: allowing users to share props in a single place
