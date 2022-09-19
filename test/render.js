@@ -17,6 +17,7 @@ test.group('Inertia render response', () => {
 
     const response = await Supertest(server.callback())
       .get('/')
+      .set('accept', 'application/json')
       .expect(500)
 
     expect(response.body).toMatchObject({

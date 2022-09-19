@@ -11,9 +11,9 @@ const { Application, ErrorHandler } = require('@supercharge/core')
  *
  * @param {import('../../dist').InertiaOptions} [inertiaConfig]
  *
- * @returns {Application}
+ * @returns {Promise<Application>}
  */
-function createApp (inertiaConfig = {}) {
+async function createApp (inertiaConfig = {}) {
   const app = Application
     .createWithAppRoot(Path.resolve(__dirname))
     .withErrorHandler(ErrorHandler)
@@ -36,10 +36,13 @@ function createApp (inertiaConfig = {}) {
       }
     })
 
-  return app
+  await app
     .register(new ViewServiceProvider(app))
     .register(new HttpServiceProvider(app))
     .register(new InertiaServiceProvider(app))
+    .boot()
+
+  return app
 }
 
 /**
@@ -47,10 +50,10 @@ function createApp (inertiaConfig = {}) {
  *
  * @param {import('../../dist').InertiaOptions} [inertiaSsrConfig]
  *
- * @returns {Application}
+ * @returns {Promise<Application>}
  */
-function createSsrApp (inertiaSsrConfig = {}) {
-  return createApp({
+async function createSsrApp (inertiaSsrConfig = {}) {
+  return await createApp({
     ssr: {
       enabled: true,
       ...inertiaSsrConfig

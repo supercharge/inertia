@@ -7,10 +7,10 @@ const { createApp } = require('./helpers')
 const { Server } = require('@supercharge/http')
 const { InertiaRequest, InertiaResponse } = require('../dist')
 
-const app = createApp()
-
 test.group('InertiaServiceProvider', () => {
   test('registers request macros', async () => {
+    const app = await createApp()
+
     const server = new Server(app).use(({ request, response }) => {
       expect(typeof request.inertia === 'function').toBe(true)
       expect(request.inertia()).toBeInstanceOf(InertiaRequest)
@@ -36,6 +36,8 @@ test.group('InertiaServiceProvider', () => {
   })
 
   test('registers response macros', async () => {
+    const app = await createApp()
+
     const server = new Server(app).use(({ response }) => {
       expect(typeof response.inertia === 'function').toBe(true)
       expect(response.inertia()).toBeInstanceOf(InertiaResponse)

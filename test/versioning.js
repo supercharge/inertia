@@ -104,6 +104,7 @@ test.group('Inertia Versioning', () => {
       .get('/')
       .set('X-Inertia', 'true')
       .set('X-Inertia-Version', version)
+      .set('accept', 'application/json')
       .expect(500)
 
     expect(response.body).toMatchObject({

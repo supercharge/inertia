@@ -9,24 +9,27 @@ const { Server } = require('@supercharge/http')
 
 test.group('Inertia SSR', () => {
   test('fails when not providing a path from where to resolve the render function', async () => {
-    expect(() => createSsrApp())
-      .toThrow('Inertia SSR is enabled but the path to the file exporting the render function is missing.')
+    expect(createSsrApp())
+      .rejects.toThrow('Inertia SSR is enabled but the path to the file exporting the render function is missing.')
   })
 
   test('fails when provided path to render function does not exist', async () => {
-    expect(() => createSsrApp({ resolveRenderFunctionFrom: './does-not-exist.js' }))
-      .toThrow('Inertia SSR is enabled but we cannot resolve the file at "./does-not-exist.js".')
+    expect(createSsrApp({ resolveRenderFunctionFrom: './does-not-exist.js' }))
+      .rejects.toThrow('Inertia SSR is enabled but we cannot resolve the file at "./does-not-exist.js".')
   })
 
   test('fails when provided path to render function does not export a function', async () => {
     const resolveRenderFunctionFrom = Path.resolve(__dirname, 'fixtures', 'ssr.string-export.js')
 
-    expect(() => createSsrApp({ resolveRenderFunctionFrom }))
-      .toThrow(`Inertia SSR is enabled but no "render" function is exported in "${resolveRenderFunctionFrom}".`)
+    expect(createSsrApp({ resolveRenderFunctionFrom }))
+      .rejects.toThrow(`Inertia SSR is enabled but no "render" function is exported in "${resolveRenderFunctionFrom}".`)
   })
 
   test('resolves render function from named "render" export', async () => {
-    const app = createSsrApp({ resolveRenderFunctionFrom: Path.resolve(__dirname, 'fixtures', 'ssr.named-export.js') })
+    const app = await createSsrApp({
+      resolveRenderFunctionFrom: Path.resolve(__dirname, 'fixtures', 'ssr.named-export.js')
+    })
+
     const server = new Server(app)
 
     server.use(({ response }) => {
@@ -56,7 +59,10 @@ test.group('Inertia SSR', () => {
   })
 
   test('resolves render function from default export', async () => {
-    const app = createSsrApp({ resolveRenderFunctionFrom: Path.resolve(__dirname, 'fixtures', 'ssr.default-export.js') })
+    const app = await createSsrApp({
+      resolveRenderFunctionFrom: Path.resolve(__dirname, 'fixtures', 'ssr.default-export.js')
+    })
+
     const server = new Server(app)
 
     server.use(({ response }) => {
@@ -86,7 +92,10 @@ test.group('Inertia SSR', () => {
   })
 
   test('resolves render function from module exports (CommonJS)', async () => {
-    const app = createSsrApp({ resolveRenderFunctionFrom: Path.resolve(__dirname, 'fixtures', 'ssr.module-export.js') })
+    const app = await createSsrApp({
+      resolveRenderFunctionFrom: Path.resolve(__dirname, 'fixtures', 'ssr.module-export.js')
+    })
+
     const server = new Server(app)
 
     server.use(({ response }) => {
