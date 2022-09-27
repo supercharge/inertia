@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.2](https://github.com/supercharge/inertia/compare/v1.2.0...v1.2.1) - 2022-09-26
+
+### Updated
+- use `^` for Supercharge framework dependency versions to avoid release issues because of mismatching versions
+  - for example: this package depends on `@supercharge/contracts` for a given version. Previously, we used `@supercharge/contracts: ~<version>` to identify the dependency version. Now we’re using `@supercharge/contracts: ^<version>` to make this package compatible with every minor `<release>` of `@supercharge/contracts`
+
+
 ## [1.2.1](https://github.com/supercharge/inertia/compare/v1.2.0...v1.2.1) - 2022-09-25
 
 ### Updated
