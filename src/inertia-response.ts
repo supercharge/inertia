@@ -1,11 +1,11 @@
 'use strict'
 
 import Os from 'node:os'
-import { SharesData } from './shares-data'
-import { resolveRenderFunctionFrom } from './utils'
+import { SharesData } from './shares-data.js'
 import { isAsyncFunction } from '@supercharge/goodies'
+import { resolveRenderFunctionFrom } from './utils.js'
 import { Application, HttpContext, HttpResponse } from '@supercharge/contracts'
-import { InertiaOptions, InertiaVersionValue, PageContract } from './contracts'
+import { InertiaOptions, InertiaVersionValue, PageContract } from './contracts/index.js'
 
 export class InertiaResponse extends SharesData {
   /**
@@ -220,7 +220,7 @@ export class InertiaResponse extends SharesData {
    * a "render" function either via a "default" export a named "render" export.
    */
   protected async renderSsrPage (page: PageContract): Promise<{ head: string[], body: string }> {
-    const render = resolveRenderFunctionFrom(this.config.ssr!.resolveRenderFunctionFrom!)
+    const render = await resolveRenderFunctionFrom(this.config.ssr!.resolveRenderFunctionFrom!)
 
     return render(page)
   }

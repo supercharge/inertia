@@ -1,6 +1,6 @@
 'use strict'
 
-import { SharesData } from './shares-data'
+import { SharesData } from './shares-data.js'
 
 export class InertiaRequest extends SharesData {
   /**

@@ -1,6 +1,16 @@
 # Changelog
 
-## [1.2.2](https://github.com/supercharge/inertia/compare/v1.2.0...v1.2.1) - 2022-09-26
+## [2.0.0](https://github.com/supercharge/inertia/compare/v1.2.2...v2.0.0) - 2023-xx-xx
+
+### Updated
+- bump dependencies
+
+### Breaking Changes
+- require Node.js v20
+- this package migrated to ESM
+
+
+## [1.2.2](https://github.com/supercharge/inertia/compare/v1.2.1...v1.2.2) - 2022-09-26
 
 ### Updated
 - use `^` for Supercharge framework dependency versions to avoid release issues because of mismatching versions

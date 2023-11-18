@@ -1,15 +1,14 @@
 'use strict'
 
-import { esmRequire } from '@supercharge/goodies'
+import { resolveDefaultImport } from '@supercharge/goodies'
 
 type RenderFunction = Function | { render: Function }
 
 /**
  * Returns the SSR "render" function from the given `path`.
  */
-export function resolveRenderFunctionFrom (renderFunctionPath: string): Function {
-  // TODO: cache require() calls
-  const renderFn = esmRequire<RenderFunction>(renderFunctionPath)
+export async function resolveRenderFunctionFrom (renderFunctionPath: string): Promise<Function> {
+  const renderFn = await resolveDefaultImport<{ default: RenderFunction | undefined }>(renderFunctionPath)
 
   if (typeof renderFn === 'function') {
     return renderFn

@@ -1,6 +1,6 @@
 'use strict'
 
-module.exports = function render (page) {
+exports.render = function render (page) {
   return {
     head: [
       '<title>Supercharge Inertia SSR</title>'

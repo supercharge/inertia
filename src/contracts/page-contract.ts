@@ -1,6 +1,6 @@
 'use strict'
 
-import { InertiaOptions } from './config-contract'
+import { InertiaOptions } from './config-contract.js'
 
 /**
  * Defines the Inertia page contract.
