@@ -1,6 +1,6 @@
 # Changelog
 
-## [2.0.0](https://github.com/supercharge/inertia/compare/v1.2.2...v2.0.0) - 2023-xx-xx
+## [2.0.0](https://github.com/supercharge/inertia/compare/v1.2.2...v2.0.0) - 2023-12-03
 
 ### Updated
 - bump dependencies
