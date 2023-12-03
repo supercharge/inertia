@@ -158,4 +158,37 @@ test('resolves render function from CommonJS module.exports', async () => {
 `)
 })
 
+test('resolves render function from CommonJS named "render" export', async () => {
+  const app = await createSsrApp({
+    resolveRenderFunctionFrom: Path.resolve(__dirname, 'fixtures', 'ssr.named-export-commonjs.cjs')
+  })
+
+  const server = createServer(app)
+
+  server.use(({ response }) => {
+    return response.inertia().render('Some/Page', {
+      name: 'Supercharge'
+    })
+  })
+
+  const response = await Supertest(server.callback())
+    .get('/')
+    .expect(200)
+
+  expect(response.text).toEqual(`<!DOCTYPE html>
+  <html lang="en">
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Supercharge Inertia</title>
+
+      <title>Supercharge Inertia SSR</title>
+    </head>
+    <body>
+        <h1>Hello Test SSR: Supercharge</h1>
+    </body>
+  </html>
+`)
+})
+
 test.run()
