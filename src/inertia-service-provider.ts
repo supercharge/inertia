@@ -2,7 +2,7 @@
 
 import Fs from 'node:fs'
 import dedent from 'dedent'
-import { InertiaOptions } from './contracts/index.js'
+import { InertiaConfig } from './contracts/index.js'
 import { InertiaRequest } from './inertia-request.js'
 import { ServiceProvider } from '@supercharge/support'
 import { resolveRenderFunctionFrom } from './utils.js'
@@ -107,7 +107,7 @@ export class InertiaServiceProvider extends ServiceProvider {
    */
   protected async registerInertiaResponseMacros (): Promise<void> {
     const app = this.app().make<Application>('app')
-    const inertiaConfig = app.config().get<InertiaOptions>('inertia', {
+    const inertiaConfig = app.config().get<InertiaConfig>('inertia', {
       view: 'app',
       ssr: { enabled: false }
     })
@@ -126,7 +126,7 @@ export class InertiaServiceProvider extends ServiceProvider {
   /**
    * Ensure the configured SSR render function is available.
    */
-  protected async ensureSsrRenderFunction (inertiaConfig: InertiaOptions): Promise<void> {
+  protected async ensureSsrRenderFunction (inertiaConfig: InertiaConfig): Promise<void> {
     const renderFunctionPath = inertiaConfig.ssr?.resolveRenderFunctionFrom
 
     if (!renderFunctionPath) {

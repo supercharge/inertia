@@ -5,7 +5,7 @@ import { SharesData } from './shares-data.js'
 import { isAsyncFunction } from '@supercharge/goodies'
 import { resolveRenderFunctionFrom } from './utils.js'
 import { Application, HttpContext, HttpResponse } from '@supercharge/contracts'
-import { InertiaOptions, InertiaVersionValue, PageContract } from './contracts/index.js'
+import { InertiaConfig, InertiaVersionValue, PageContract } from './contracts/index.js'
 
 export class InertiaResponse extends SharesData {
   /**
@@ -21,12 +21,12 @@ export class InertiaResponse extends SharesData {
   /**
    * Stores the reference to the Inertia configuration.
    */
-  private readonly config: InertiaOptions
+  private readonly config: InertiaConfig
 
   /**
    * Create a new instance.
    */
-  constructor (app: Application, { request, response }: HttpContext, config: InertiaOptions) {
+  constructor (app: Application, { request, response }: HttpContext, config: InertiaConfig) {
     super(request)
 
     this.app = app
