@@ -8,6 +8,8 @@
 ### Breaking Changes
 - require Node.js v20
 - this package migrated to ESM
+- renamed `InertiaOptions` to `InertiaConfig`
+  - renaming the Inertia config file to `InertiaConfig` aligns with the Supercharge config naming where all exported config contracts have the `Config` suffix. And the `config/inertia.ts` file location aligns with the `InertiaConfig` naming, too.
 
 
 ## [1.2.2](https://github.com/supercharge/inertia/compare/v1.2.1...v1.2.2) - 2022-09-26
