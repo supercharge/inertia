@@ -1,5 +1,11 @@
 # Changelog
 
+## [2.0.1](https://github.com/supercharge/inertia/compare/v2.0.0...v2.0.1) - 2023-12-03
+
+### Fixes
+- fix SSR file import and render function resolution: we previously needed a default export. Now an exported render function will resolve correctly
+
+
 ## [2.0.0](https://github.com/supercharge/inertia/compare/v1.2.2...v2.0.0) - 2023-12-03
 
 ### Updated
