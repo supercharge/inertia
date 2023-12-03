@@ -3,6 +3,14 @@
 import { tap } from '@supercharge/goodies'
 import { HttpRequest } from '@supercharge/contracts'
 
+type InertiaSharedDataType = Record<string, any>
+
+declare module '@supercharge/contracts' {
+  export interface HttpStateData {
+    'inertia': InertiaSharedDataType
+  }
+}
+
 export class SharesData {
   /**
    * Stores the reference to the HTTP request.
@@ -19,7 +27,7 @@ export class SharesData {
   /**
    * Assign shared data that will be merged into the response props.
    */
-  share (data: Record<string, unknown>): this {
+  share (data: InertiaSharedDataType): this {
     return tap(this, () => {
       this.request.state().merge({ inertia: data })
     })
@@ -28,7 +36,7 @@ export class SharesData {
   /**
    * Returns the shared Inertia data.
    */
-  sharedData (): Record<string, unknown> {
-    return this.request.state().get('inertia', {})!
+  sharedData (): InertiaSharedDataType {
+    return this.request.state().get('inertia', {})
   }
 }

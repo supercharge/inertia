@@ -1,4 +1,4 @@
 'use strict'
 
-export * from './page-contract'
-export * from './config-contract'
+export * from './page-contract.js'
+export * from './config-contract.js'

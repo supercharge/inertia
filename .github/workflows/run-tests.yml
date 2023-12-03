@@ -1,9 +1,15 @@
 name: Run tests
 
-on: [push, pull_request]
+on:
+  push:
+    paths-ignore:
+      - 'README.md'
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  # the group name is composed of two elements:
+  #   1. this workflow name "run-tests"
+  #   2. the branch name retrieved via the "github.ref" variable
+  group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 
 jobs:
@@ -12,16 +18,16 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [16.x, 18.x]
+        node-version: [20.x, latest]
 
     name: Node ${{ matrix.node-version }}
 
     steps:
       - name: Git checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
 
@@ -29,6 +35,6 @@ jobs:
         run: npm install
 
       - name: Run tests
-        run: npm run test:full
+        run: npm test
         env:
           CI: true

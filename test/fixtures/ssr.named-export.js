@@ -1,5 +1,8 @@
 'use strict'
 
-const render = require('./ssr.module-export')
+import RenderFunction from './ssr.named-export-commonjs.cjs'
 
-exports.render = render
+export const render = RenderFunction
+
+// this export default is required by ESM
+export default render

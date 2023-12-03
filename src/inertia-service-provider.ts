@@ -2,11 +2,11 @@
 
 import Fs from 'node:fs'
 import dedent from 'dedent'
-import { InertiaOptions } from './contracts'
-import { InertiaRequest } from './inertia-request'
-import { resolveRenderFunctionFrom } from './utils'
-import { InertiaResponse } from './inertia-response'
+import { InertiaConfig } from './contracts/index.js'
+import { InertiaRequest } from './inertia-request.js'
 import { ServiceProvider } from '@supercharge/support'
+import { resolveRenderFunctionFrom } from './utils.js'
+import { InertiaResponse } from './inertia-response.js'
 import { Application, HttpRequest, HttpRequestCtor, HttpResponse, HttpResponseCtor, ViewEngine } from '@supercharge/contracts'
 
 /**
@@ -45,7 +45,7 @@ export class InertiaServiceProvider extends ServiceProvider {
   override async boot (): Promise<void> {
     this.registerInertiaPartialViews()
     this.registerInertiaRequestMacros()
-    this.registerInertiaResponseMacros()
+    await this.registerInertiaResponseMacros()
   }
 
   /**
@@ -105,14 +105,18 @@ export class InertiaServiceProvider extends ServiceProvider {
   /**
    * Register the Inertia resposne macros.
    */
-  protected registerInertiaResponseMacros (): void {
+  protected async registerInertiaResponseMacros (): Promise<void> {
     const app = this.app().make<Application>('app')
-    const Response = this.app().make<HttpResponseCtor>('response')
-    const inertiaConfig = app.config().get<InertiaOptions>('inertia', { view: 'app', ssr: { enabled: false } })
+    const inertiaConfig = app.config().get<InertiaConfig>('inertia', {
+      view: 'app',
+      ssr: { enabled: false }
+    })
 
     if (inertiaConfig.ssr?.enabled) {
-      this.ensureSsrRenderFunction(inertiaConfig)
+      await this.ensureSsrRenderFunction(inertiaConfig)
     }
+
+    const Response = this.app().make<HttpResponseCtor>('response')
 
     Response.macro('inertia', function (this: HttpResponse) {
       return new InertiaResponse(app, this.ctx(), inertiaConfig)
@@ -122,7 +126,7 @@ export class InertiaServiceProvider extends ServiceProvider {
   /**
    * Ensure the configured SSR render function is available.
    */
-  protected ensureSsrRenderFunction (inertiaConfig: InertiaOptions): void {
+  protected async ensureSsrRenderFunction (inertiaConfig: InertiaConfig): Promise<void> {
     const renderFunctionPath = inertiaConfig.ssr?.resolveRenderFunctionFrom
 
     if (!renderFunctionPath) {
@@ -133,6 +137,6 @@ export class InertiaServiceProvider extends ServiceProvider {
       throw new Error(`Inertia SSR is enabled but we cannot resolve the file at "${renderFunctionPath}".`)
     }
 
-    resolveRenderFunctionFrom(renderFunctionPath)
+    await resolveRenderFunctionFrom(renderFunctionPath)
   }
 }

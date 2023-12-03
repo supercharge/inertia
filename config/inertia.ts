@@ -1,9 +1,9 @@
-'use strict'
 
+import { App } from '@supercharge/facades'
 import { Application } from '@supercharge/contracts'
-import { Inertia, InertiaOptions } from '@supercharge/inertia'
+import { Inertia, InertiaConfig } from '@supercharge/inertia'
 
-const inertiaConfig: InertiaOptions = {
+const inertiaConfig: InertiaConfig = {
   /**
    * Defines the root template view that will be loaded on the first page visit.
    * This root view template should be provided in the resources directory of
@@ -46,7 +46,7 @@ const inertiaConfig: InertiaOptions = {
      * render function is required for Inertia to create the rendered HTML.
      * Your file may use a default export or a named "render" export.
      */
-    resolveRenderFunctionFrom: 'bootstrap/ssr.js'
+    resolveRenderFunctionFrom: App.resolveFromBasePath('bootstrap/ssr/ssr.js')
   }
 }
 

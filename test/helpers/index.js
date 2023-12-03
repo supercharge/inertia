@@ -1,10 +1,13 @@
 'use strict'
 
-const Path = require('path')
-const { InertiaServiceProvider } = require('../../dist')
-const { HttpServiceProvider } = require('@supercharge/http')
-const { ViewServiceProvider } = require('@supercharge/view')
-const { Application, ErrorHandler } = require('@supercharge/core')
+import Path from 'node:path'
+import { fileURLToPath } from 'node:url'
+import { ViewServiceProvider } from '@supercharge/view'
+import { InertiaServiceProvider } from '../../dist/index.js'
+import { Application, ErrorHandler } from '@supercharge/core'
+import { HttpServiceProvider, Server } from '@supercharge/http'
+
+const __dirname = Path.dirname(fileURLToPath(import.meta.url))
 
 /**
  * Returns a test application.
@@ -13,7 +16,7 @@ const { Application, ErrorHandler } = require('@supercharge/core')
  *
  * @returns {Promise<Application>}
  */
-async function createApp (inertiaConfig = {}) {
+export async function createApp (inertiaConfig = {}) {
   const app = Application
     .createWithAppRoot(Path.resolve(__dirname))
     .withErrorHandler(ErrorHandler)
@@ -52,7 +55,7 @@ async function createApp (inertiaConfig = {}) {
  *
  * @returns {Promise<Application>}
  */
-async function createSsrApp (inertiaSsrConfig = {}) {
+export async function createSsrApp (inertiaSsrConfig = {}) {
   return await createApp({
     ssr: {
       enabled: true,
@@ -61,7 +64,13 @@ async function createSsrApp (inertiaSsrConfig = {}) {
   })
 }
 
-module.exports = {
-  createApp,
-  createSsrApp
+/**
+ * @param {Application} app
+ */
+export function createServer (app) {
+  return new Server(
+    app,
+    app.config().get('app', {}),
+    app.config().get('http', {})
+  )
 }

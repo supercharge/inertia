@@ -3,9 +3,16 @@
 import { Application } from '@supercharge/contracts'
 
 /**
+ * Defines the types for the Inertia version configuration.
+ */
+export type InertiaVersion = InertiaVersionValue | InertiaVersionFunction
+export type InertiaVersionValue = string | number | undefined
+export type InertiaVersionFunction = (app: Application) => Promise<InertiaVersionValue> | InertiaVersionValue
+
+/**
  * Defines the Inertia configuration.
  */
-export interface InertiaOptions {
+export interface InertiaConfig {
   /**
    * Defines the root template view that will be loaded on the first page visit.
    * This root view template should be provided in the resources directory of
@@ -47,10 +54,3 @@ export interface InertiaOptions {
     resolveRenderFunctionFrom?: string
   }
 }
-
-/**
- * Defines the types for the Inertia version configuration.
- */
-export type InertiaVersion = InertiaVersionValue | InertiaVersionFunction
-export type InertiaVersionValue = string | number | undefined
-export type InertiaVersionFunction = (app: Application) => Promise<InertiaVersionValue> | InertiaVersionValue
