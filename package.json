@@ -1,7 +1,7 @@
 {
   "name": "@supercharge/inertia",
   "description": "Inertia adapter for the Supercharge Node.js Framework",
-  "version": "1.2.2",
+  "version": "2.0.0",
   "author": "Marcus Pöhls <marcus@superchargejs.com>",
   "bugs": {
     "url": "https://github.com/supercharge/inertia/issues"
