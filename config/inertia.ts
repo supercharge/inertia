@@ -24,7 +24,7 @@ const inertiaConfig: InertiaConfig = {
    */
   version: async (app: Application) => {
     return Inertia.manifestFile(
-      app.publicPath('js/manifest.json')
+      app.publicPath('js/.vite/manifest.json')
     )
   },
 
