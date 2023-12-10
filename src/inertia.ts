@@ -6,10 +6,6 @@ import { createHash } from 'node:crypto'
 export class Inertia {
   /**
    * Returns the MD5 hash for the content of the given `manifestFilePath`.
-   *
-   * @param manifestFilePath
-   *
-   * @returns {Promise<string>}
    */
   public static async manifestFile (manifestFilePath: string): Promise<string> {
     if (await Fs.notExists(manifestFilePath)) {

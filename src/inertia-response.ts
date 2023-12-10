@@ -47,10 +47,6 @@ export class InertiaResponse extends SharesData {
 
   /**
    * Returns a server-initiated Inertia redirect to the given `url`.
-   *
-   * @param {String} url
-   *
-   * @returns {HttpResponse}
    */
   location (url: string): HttpResponse {
     return this.response.status(409).withHeaders({ 'X-Inertia-Location': url })
@@ -58,11 +54,6 @@ export class InertiaResponse extends SharesData {
 
   /**
    * Render the inertia component.
-   *
-   * @param component
-   * @param responseProps
-   *
-   * @returns {*}
    */
   async render (component: string, responseProps?: Record<string, unknown>): Promise<string | Record<string, unknown> | HttpResponse> {
     if (!component) {
@@ -116,10 +107,6 @@ export class InertiaResponse extends SharesData {
   /**
    * Determine whether the inertia version in the `X-Inertia-Version` request
    * header is different than the computed asset version on the server.
-   *
-   * @param request
-   *
-   * @returns {Boolean}
    */
   protected async hasVersionConflict (): Promise<boolean> {
     return this.isInertiaGetRequest() && await this.hasVersionMismatch()
@@ -127,8 +114,6 @@ export class InertiaResponse extends SharesData {
 
   /**
    * Determine whether the request comes from Inertia and is a GET request.
-   *
-   * @returns {boolean}
    */
   protected isInertiaGetRequest (): boolean {
     return this.request.isInertia() && this.request.isMethod('GET')
@@ -136,8 +121,6 @@ export class InertiaResponse extends SharesData {
 
   /**
    * Determine whether the Inertia version in the request is different than the server’s asset version.
-   *
-   * @returns {Promise<boolean>}
    */
   protected async hasVersionMismatch (): Promise<boolean> {
     return this.request.inertia().version() !== await this.version()
@@ -147,11 +130,6 @@ export class InertiaResponse extends SharesData {
    * Determine what to do when the Inertia asset versions don’t match. This
    * mismatch happens when the calculated asset version on server-side
    * is different than the version as part of the client’s request.
-   *
-   * @param request
-   * @param response
-   *
-   * @returns {HttpResponse}
    */
   protected onVersionConflict (): HttpResponse {
     return this.location(this.request.req().url!)
@@ -205,8 +183,6 @@ export class InertiaResponse extends SharesData {
 
   /**
    * Determine whether the Inertia version in the request is different than the server’s asset version.
-   *
-   * @returns {Promise<boolean>}
    */
   protected shouldSsr (): boolean {
     return this.config.ssr?.enabled ?? false
