@@ -1,5 +1,11 @@
 # Changelog
 
+## [2.0.2](https://github.com/supercharge/inertia/compare/v2.0.1...v2.0.2) - 2023-xx-xx
+
+### Updates
+- remove JSDoc blocks in comments because they are a duplicate of the TypeScript types
+
+
 ## [2.0.1](https://github.com/supercharge/inertia/compare/v2.0.0...v2.0.1) - 2023-12-03
 
 ### Fixes
