@@ -50,6 +50,7 @@ This package is compatible with Supercharge `3.x` or later:
 
 | Major Release | [Supercharge](https://github.com/supercharge/supercharge) version | Node.js version |
 | ----- | ----- | ------ |
+| `2.x` | `4.x` | `>=20` |
 | `1.x` | `3.x` | `>=16` |
 
 
