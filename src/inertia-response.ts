@@ -55,7 +55,7 @@ export class InertiaResponse extends SharesData {
   /**
    * Render the inertia component.
    */
-  async render (component: string, responseProps?: Record<string, unknown>): Promise<string | Record<string, unknown> | HttpResponse> {
+  async render<ResponseProps = Record<string, unknown>> (component: string, responseProps?: ResponseProps): Promise<string | ResponseProps | HttpResponse> {
     if (!component) {
       throw new Error('Missing component name when calling "response.inertia().render(<component>)"')
     }

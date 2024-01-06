@@ -1,6 +1,10 @@
 # Changelog
 
-## [2.0.2](https://github.com/supercharge/inertia/compare/v2.0.1...v2.0.2) - 2023-xx-xx
+## [2.1.0](https://github.com/supercharge/inertia/compare/v2.0.1...v2.1.0) - 2024-01-xx
+
+### Added
+- add optional response props type to render method: `response.inertia().render<ResponseProps = Record<string, unknown>>(…)`
+  - this is useful if you want to provide a contract between frontend and backend props
 
 ### Updates
 - remove JSDoc blocks in comments because they are a duplicate of the TypeScript types
