@@ -1,6 +1,6 @@
 # Changelog
 
-## [2.1.0](https://github.com/supercharge/inertia/compare/v2.0.1...v2.1.0) - 2024-01-xx
+## [2.1.0](https://github.com/supercharge/inertia/compare/v2.0.1...v2.1.0) - 2024-01-06
 
 ### Added
 - add optional response props type to render method: `response.inertia().render<ResponseProps = Record<string, unknown>>(…)`
